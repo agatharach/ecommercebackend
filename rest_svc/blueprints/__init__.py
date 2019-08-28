@@ -17,7 +17,7 @@ app.config['JWT_SECRET_KEY']='VS-REjgGDMq3Ne2AMhjK'
 app.config['JWT_ACCESS_TOKEN_EXPIRES']=timedelta(days=30)
 
 # database
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:@localhost:3306/eCommerce'
+app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://admin:Altabatch3@ecommerce.cwpvjetmrbmv.ap-southeast-1.rds.amazonaws.com/eCommerce"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # jwt

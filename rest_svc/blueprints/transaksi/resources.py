@@ -14,17 +14,16 @@ bp_transaksi = Blueprint('transaksi',__name__)
 api = Api(bp_transaksi)
 
 class TransaksiResource(Resource):
-    def options(self):
+    def options(self,id):
         return {'status' :'ok'},200
         
     @jwt_required
-    @internal_required
     def get(self, id):
         qry = Trx.query.filter_by(user_id=id)
         if qry is not None:
             rows = []
             for row in qry.all():
-                rows.append(marshal(row, Carts.response_fields))
+                rows.append(marshal(row, Trx.response_fields))
             return rows,200
         return {'status': 'NOT FOUND', 'message': 'Cart not found'}, 404
 

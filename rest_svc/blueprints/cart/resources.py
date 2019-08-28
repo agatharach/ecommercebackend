@@ -16,6 +16,9 @@ bp_cart = Blueprint('cart',__name__)
 api = Api(bp_cart)
 
 class CartResource(Resource):
+    def options(self,id):
+        return {'status' :'ok'},200
+    
     @jwt_required
     def get(self, id):
         qry = Carts.query.filter_by(user_id=id)
@@ -27,6 +30,8 @@ class CartResource(Resource):
         return {'status': 'NOT FOUND', 'message': 'Cart not found'}, 404
     
 class CartResourcePlus(Resource):
+    def options(self,id):
+        return {'status' :'ok'},200
     @jwt_required
     def put(self,id):
         parser = reqparse.RequestParser()        
@@ -55,6 +60,9 @@ class CartResourcePlus(Resource):
         return marshal(cartData,Carts.response_fields),200
 
 class CartResourceMinus(Resource):
+    def options(self,id):
+        return {'status' :'ok'},200
+        
     @jwt_required
     def put(self,id):
         parser = reqparse.RequestParser()        
@@ -76,6 +84,8 @@ class CartResourceMinus(Resource):
         return marshal(cartData,Carts.response_fields),200
 
 class CartDeleteItems(Resource) :
+    def options(self,id):
+        return {'status' :'ok'},200
     @jwt_required
     def delete(self,id):
         parser = reqparse.RequestParser()        
@@ -93,6 +103,8 @@ class CartDeleteItems(Resource) :
         return {'status' : 'Deleted'},200
 
 class CartCheckout(Resource):
+    def options(self):
+        return {'status' :'ok'},200
     @jwt_required
     def post(self):
         parser = reqparse.RequestParser()

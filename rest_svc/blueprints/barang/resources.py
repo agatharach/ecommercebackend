@@ -13,15 +13,18 @@ bp_barang = Blueprint('barang',__name__)
 api = Api(bp_barang)
 
 class BarangResource(Resource):          
+    def options(self,id):
+        return {'status' :'ok'},200
+
     def get(self, id):
         qry=Barangs.query.get(id)
         if qry is not None:
             return marshal(qry, Barangs.response_fields),200
-        return {'status': 'NOT FOUND', 'message': 'Person not found'}, 404
+        return {'status': 'NOT FOUND', 'message': 'Items not found'}, 404
 
    
     @jwt_required
-    def patch(self,id):
+    def post(self,id):
         parser = reqparse.RequestParser()        
         parser.add_argument('user_id', location='json')
         data = parser.parse_args()
@@ -65,15 +68,17 @@ class BarangPost(Resource):
     def post(self):
         parser = reqparse.RequestParser()
         parser.add_argument('user_id', location='json')
+        parser.add_argument('username', location='json')
         parser.add_argument('name', location='json')
         parser.add_argument('stok', location='json')
         parser.add_argument('harga', location='json')
         parser.add_argument('category', location='json')
         parser.add_argument('urlfoto', location='json')
+        parser.add_argument('deskripsi', location='json')
 
         data = parser.parse_args()
 
-        barang = Barangs(data['user_id'],data['name'], data['stok'], data ['harga'], data['category'],data['urlfoto'])
+        barang = Barangs(data['user_id'],data['username'],data['name'], data['stok'], data ['harga'], data['category'],data['urlfoto'],data['deskripsi'])
         db.session.add(barang)
         db.session.commit()
 

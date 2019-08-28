@@ -24,6 +24,38 @@ class UserGetResource(Resource):
             return marshal(qry, Users.response_fields),200, {'Content-Type': 'application/json'}
         return {'status': 'NOT FOUND', 'message': 'Person not found'}, 404
 
+    def put(self,id):
+        parser = reqparse.RequestParser()
+        parser.add_argument('username', location='json')
+        parser.add_argument('password', location='json')
+        parse.add_argument('alamat', location='json')
+        parser.add_argument('status', location='json')
+        parser.add_argument('nomorhp', location='json')
+        args = parser.parse_args()
+
+        qry = Users.query.get(id)
+        if qry is None:
+            return {'status': "NOT_FOUND"}, 404
+
+        qry.username = args['username']
+        qry.password = args['password']
+        qry.status = args['status']
+        qry.alamat = args['alamat']
+        qry.nomorhp = args['nomorhp']
+
+
+        return marshal(qry, Users.response_fields), 200
+
+    def delete(self, id=None):
+        qry = Users.query.get(id)
+        if qry is None:
+            return {'status': 'NOT_FOUND'}, 404
+
+        db.session.delete(qry)
+        db.session.commit()
+        
+        return {'status': 'DELETED'}, 200
+
 
 class UserResource(Resource):
     def options(self):
@@ -100,5 +132,3 @@ api.add_resource(UserList, '/list')
 api.add_resource(CreateTokenResource, '/login')
 api.add_resource(UserGetResource,'/whoisme')
 api.add_resource(UserResource,'')
-
-    
